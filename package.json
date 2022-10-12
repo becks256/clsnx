@@ -1,6 +1,6 @@
 {
   "name": "@becks256/clsnx",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An ultra-light ESNext approach for conditionally joining classNames together; inspired by JedWatson's classnames. ",
   "main": "src/index.js",
   "scripts": {
