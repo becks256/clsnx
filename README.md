@@ -65,6 +65,9 @@ clsnx(
 ) // => "class1 class2 thing-1 class3 class6 class7 class8 class9 nestedclass double-nested-class class11"
 ```
 
+> [!TIP]
+> When passing objects, there are 2 paradigms to consider.  First, if the value in a key / value pair is `true | false`, the key is the target for class name extraction, otherwise the value is the target. This allows for greater flexibility in how strings are assigned and passed to the method. 
+
 ## Usage - React
 
 ```jsx
