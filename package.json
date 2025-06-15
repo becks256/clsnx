@@ -1,24 +1,64 @@
 {
   "name": "@becks256/clsnx",
   "version": "1.1.0",
-  "description": "An ultra-light ESNext approach for conditionally joining classNames together; inspired by JedWatson's classnames. ",
+  "description": "Ultra-lightweight (537B gzipped) CSS class utility with built-in deduplication - 19% smaller than classnames with superior functionality.",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --project tsconfig.json",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "benchmark": "node benchmarks/performance.js",
+    "bundle-size": "node benchmarks/bundle-size.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Rebel-IST/clsnx.git"
+    "url": "git+https://github.com/becks256/clsnx.git"
   },
   "keywords": [
     "classnames",
     "clsnx",
-    "react-classnames"
+    "react-classnames",
+    "css",
+    "css-classes",
+    "className",
+    "class-names",
+    "utility",
+    "react",
+    "vue",
+    "angular",
+    "typescript",
+    "javascript",
+    "css-in-js",
+    "styled-components",
+    "tailwind",
+    "bootstrap",
+    "conditional-classes",
+    "dynamic-classes",
+    "class-utilities",
+    "frontend",
+    "ui",
+    "component-library",
+    "deduplication",
+    "performance",
+    "lightweight",
+    "zero-dependencies",
+    "esm",
+    "commonjs",
+    "browser",
+    "node"
   ],
   "author": "Dan Becker",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Rebel-IST/clsnx/issues"
+    "url": "https://github.com/becks256/clsnx/issues"
   },
-  "homepage": "https://github.com/Rebel-IST/clsnx#readme"
+  "homepage": "https://github.com/becks256/clsnx#readme",
+  "devDependencies": {
+    "benchmark": "^2.1.4",
+    "classnames": "^2.5.1",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.3"
+  }
 }
