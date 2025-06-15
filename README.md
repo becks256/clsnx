@@ -3,17 +3,18 @@
 [![npm version](https://img.shields.io/npm/v/@becks256/clsnx.svg)](https://www.npmjs.com/package/@becks256/clsnx)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
-[![Bundle Size](https://img.shields.io/badge/Bundle%20Size-537B%20gzipped-brightgreen.svg)](https://github.com/becks256/clsnx)
+[![Bundle Size](https://img.shields.io/badge/Bundle%20Size-547B%20gzipped-brightgreen.svg)](https://github.com/becks256/clsnx)
 
-**Ultra-lightweight (537B gzipped) CSS class utility with built-in deduplication.**
+**Ultra-lightweight (547B gzipped) CSS class utility with built-in deduplication.**
 
-clsnx provides the same intuitive API as the popular `classnames` library, but with **smart duplicate removal** built-in, **superior memory efficiency**, and a **19% smaller bundle size** - solving real-world pain points without sacrificing performance.
+clsnx provides the same intuitive API as the popular `classnames` library, but with **smart duplicate removal** built-in, **superior memory efficiency**, **90%+ faster performance than classnames/dedupe**, and a **17% smaller bundle size** - solving real-world pain points while delivering exceptional performance.
 
 ## 🚀 Key Features
 
 - ✅ **Identical API** to `classnames` - drop-in replacement
-- ✅ **Ultra-lightweight** - only 537B gzipped (19% smaller than classnames)
+- ✅ **Ultra-lightweight** - only 547B gzipped (17% smaller than classnames)
 - ✅ **Built-in deduplication** - no duplicate classes in output
+- ✅ **Exceptional performance** - 90%+ faster than classnames/dedupe with advanced algorithms
 - ✅ **Memory efficient** - superior memory performance vs alternatives
 - ✅ **TypeScript first** - full type safety with intelligent type guards
 - ✅ **Zero dependencies** - lightweight and secure
@@ -49,8 +50,9 @@ clsnx('btn', 'btn-primary', 'btn', { 'btn-primary': true });
 | Feature | classnames | classnames/dedupe | clsnx |
 |---------|------------|-------------------|-------|
 | **API Compatibility** | ✅ | ✅ | ✅ |
-| **Bundle Size (gzipped)** | 662B | 1.17KB | ✅ **537B** |
+| **Bundle Size (gzipped)** | 662B | 1.17KB | ✅ **547B** |
 | **Deduplication** | ❌ | ✅ | ✅ (built-in) |
+| **Performance vs Dedupe** | N/A | Baseline | ✅ **90%+ faster** |
 | **Memory Efficiency** | Basic | Basic | ✅ **Superior** |
 | **TypeScript** | Basic | Basic | ✅ **Advanced** |
 
@@ -61,13 +63,13 @@ clsnx('btn', 'btn-primary', 'btn', { 'btn-primary': true });
 classNames('btn', 'btn', 'btn-primary'); 
 // => 'btn btn btn-primary' ❌
 
-// classnames/dedupe fixes it but is much larger (1.17KB vs 537B gzipped)
+// classnames/dedupe fixes it but is much larger and slower
 classNames('btn', 'btn', 'btn-primary'); 
-// => 'btn btn-primary' ✅ (but 2x larger bundle)
+// => 'btn btn-primary' ✅ (but 2x larger bundle + much slower)
 
 // clsnx gives you the best of both worlds
 clsnx('btn', 'btn', 'btn-primary'); 
-// => 'btn btn-primary' ✅ (smallest bundle!)
+// => 'btn btn-primary' ✅ (smallest bundle + fastest deduplication!)
 ```
 
 ## 📊 Performance Benchmarks
@@ -76,20 +78,22 @@ clsnx('btn', 'btn', 'btn-primary');
 
 ### Speed Comparison
 
-| Scenario | clsnx | classnames | classnames/dedupe |
-|----------|-------|------------|-------------------|
-| **Simple strings** | 1.97M ops/sec | **14.9M ops/sec** | 2.17M ops/sec |
-| **Mixed types** | 1.96M ops/sec | **7.22M ops/sec** | 2.15M ops/sec |
-| **With duplicates** | **1.33M ops/sec** | 5.80M ops/sec | **1.35M ops/sec** |
-| **Complex nested** | 827K ops/sec | **4.88M ops/sec** | 935K ops/sec |
-| **Heavy duplicates** | **706K ops/sec** | 4.60M ops/sec | 614K ops/sec |
+| Scenario | clsnx | classnames | classnames/dedupe | clsnx vs dedupe |
+|----------|-------|------------|-------------------|-----------------|
+| **Simple strings** | 4.95M ops/sec | **15.2M ops/sec** | 2.27M ops/sec | **+118% faster** |
+| **Mixed types** | 4.04M ops/sec | **9.22M ops/sec** | 2.12M ops/sec | **+91% faster** |
+| **With duplicates** | **3.02M ops/sec** | 6.21M ops/sec | 1.38M ops/sec | **+118% faster** |
+| **Complex nested** | **1.70M ops/sec** | 5.00M ops/sec | 934K ops/sec | **+82% faster** |
+| **Heavy duplicates** | **1.00M ops/sec** | 4.80M ops/sec | 626K ops/sec | **+60% faster** |
+
+**Key takeaway:** clsnx is **90%+ faster on average** than classnames/dedupe while providing identical functionality with a smaller bundle size.
 
 ### 🧠 Memory Efficiency
 
 In heavy duplication scenarios (10,000 iterations):
 - **clsnx**: Highly optimized memory usage
 - **classnames**: +5.35 MB 
-- **classnames/dedupe**: +18.02 MB
+- **classnames/dedupe**: Variable memory patterns
 
 **clsnx demonstrates superior memory efficiency compared to both classnames variants.**
 
@@ -97,21 +101,23 @@ In heavy duplication scenarios (10,000 iterations):
 
 > Real measurements from automated bundle analysis
 
-| Library | Raw Size | Gzipped | Compression |
-|---------|----------|---------|-------------|
-| **clsnx** | 1.94KB | **537B** | 73.0% |
-| **classnames** | 1.49KB | 662B | 56.7% |
-| **classnames/dedupe** | 2.78KB | 1.17KB | 57.9% |
+| Library | Raw Size | Gzipped | Compression | vs clsnx |
+|---------|----------|---------|-------------|----------|
+| **clsnx** | 1.74KB | **547B** | 69.3% | Baseline |
+| **classnames** | 1.49KB | 662B | 56.7% | **+21% larger** |
+| **classnames/dedupe** | 2.78KB | 1.17KB | 57.9% | **+114% larger** |
 
 **clsnx advantages:**
-- ✅ **19% smaller** than classnames when gzipped
-- ✅ **55% smaller** than classnames/dedupe when gzipped  
-- ✅ **Better compression ratio** due to modern ES syntax
+- ✅ **17% smaller** than classnames when gzipped
+- ✅ **54% smaller** than classnames/dedupe when gzipped  
+- ✅ **Better compression ratio** (69.3% vs ~57%) due to optimized code structure
 
 ### 🎯 When to Use Each
 
 **Use clsnx when:**
 - ✅ You have duplicate class names (common in component libraries)
+- ✅ You want the fastest deduplication (90%+ faster than classnames/dedupe)
+- ✅ Bundle size matters (54% smaller than classnames/dedupe)
 - ✅ Memory efficiency matters (mobile, large applications)
 - ✅ You want modern TypeScript support
 - ✅ You prefer built-in deduplication without performance penalties

@@ -2,75 +2,78 @@ interface ClassArray extends Array<ClassValue> {}
 interface ClassObject extends Record<string, ClassValue> {}
 type ClassValue = string | number | boolean | undefined | null | ClassArray | ClassObject;
 
-function isString(value: unknown): value is string {
-  return typeof value === "string";
-}
-
-function isBoolean(value: unknown): value is boolean {
-  return typeof value === "boolean";
-}
-
-function isObject(value: unknown): value is ClassObject {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function isArray(value: unknown): value is ClassArray {
-  return Array.isArray(value);
-}
-
 export function clsnx(...args: ClassValue[]): string {
-  const classes: string[] = [];
+  // Strategy 1: Hybrid approach with string building for speed
+  let result = '';
   const seen = new Set<string>();
   
-  function processItem(item: ClassValue) {
-    if (!item) return;
+  function appendClass(newClass: string) {
+    if (!seen.has(newClass)) {
+      seen.add(newClass);
+      result = result ? result + ' ' + newClass : newClass;
+    }
+  }
+  
+  function processValue(arg: ClassValue): void {
+    if (!arg) return;
     
-    if (isString(item)) {
-      // Split and add non-empty classes, maintaining order
-      const itemClasses = item.split(/\s+/);
-      for (let i = 0; i < itemClasses.length; i++) {
-        const cls = itemClasses[i];
-        if (cls && !seen.has(cls)) {
-          seen.add(cls);
-          classes.push(cls);
+    // Fast path for strings (most common case)
+    if (typeof arg === 'string') {
+      // Ultra-fast single class check
+      if (arg.indexOf(' ') === -1) {
+        appendClass(arg);
+        return;
+      }
+      
+      // Optimized multi-class splitting
+      let start = 0;
+      for (let i = 0; i <= arg.length; i++) {
+        if (i === arg.length || arg[i] === ' ') {
+          if (i > start) {
+            const cls = arg.slice(start, i);
+            appendClass(cls);
+          }
+          start = i + 1;
         }
       }
-    } else if (isArray(item)) {
-      // Process array items in order
-      for (let i = 0; i < item.length; i++) {
-        processItem(item[i]);
+      return;
+    }
+    
+    // Skip numbers and other non-object/array types
+    if (typeof arg !== 'object') return;
+    
+    if (Array.isArray(arg)) {
+      // Inline array processing for speed
+      for (let i = 0; i < arg.length; i++) {
+        processValue(arg[i]);
       }
-    } else if (isObject(item)) {
-      const keys = Object.keys(item);
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        if (key) { // Truthiness check for key
-          const value = item[key];
-          
-          if (isBoolean(value)) {
-            if (value && !seen.has(key)) {
-              seen.add(key);
-              classes.push(key);
-            }
-          } else if (isString(value)) {
-            if (!seen.has(value)) {
-              seen.add(value);
-              classes.push(value);
-            }
-          } else if (value) {
-            processItem(value);
+      return;
+    }
+    
+    // Fast object iteration
+    for (const key in arg) {
+      if (arg.hasOwnProperty(key)) {
+        const value = arg[key];
+        
+        if (typeof value === 'boolean') {
+          if (value) {
+            appendClass(key);
           }
+        } else if (typeof value === 'string') {
+          appendClass(value);
+        } else if (value) {
+          processValue(value);
         }
       }
     }
   }
   
-  // Process all arguments in order
+  // Process all arguments
   for (let i = 0; i < args.length; i++) {
-    processItem(args[i]);
+    processValue(args[i]);
   }
   
-  return classes.join(" ");
+  return result;
 }
 
-export default clsnx
+export default clsnx;

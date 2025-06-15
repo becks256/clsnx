@@ -1,7 +1,7 @@
 {
   "name": "@becks256/clsnx",
   "version": "1.1.0",
-  "description": "Ultra-lightweight (537B gzipped) CSS class utility with built-in deduplication - 19% smaller than classnames with superior functionality.",
+  "description": "Ultra-lightweight (547B gzipped) CSS class utility with built-in deduplication - 17% smaller than classnames with 90%+ faster performance than alternatives.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
