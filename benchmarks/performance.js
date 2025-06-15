@@ -1,7 +1,7 @@
 const Benchmark = require('benchmark');
 const classNames = require('classnames');
 const classNamesDedupe = require('classnames/dedupe');
-const { clsnx } = require('../src/index.ts');
+const { clsnx, clsnxDedupe } = require('../src/index.ts');
 
 const suite = new Benchmark.Suite();
 
@@ -63,7 +63,7 @@ const scenarios = {
   }
 };
 
-console.log('🚀 Performance Benchmark: clsnx vs classnames\n');
+console.log('🚀 Performance Benchmark: clsnx vs clsnxDedupe vs classnames\n');
 
 // Run benchmarks for each scenario
 Object.entries(scenarios).forEach(([key, scenario]) => {
@@ -72,17 +72,25 @@ Object.entries(scenarios).forEach(([key, scenario]) => {
   
   // Test output consistency first
   const clsnxResult = clsnx(...scenario.args);
+  const clsnxDedupeResult = clsnxDedupe(...scenario.args);
   const classNamesResult = classNames(...scenario.args);
   const classNamesDedupeResult = classNamesDedupe(...scenario.args);
   
-  console.log(`   clsnx output:            "${clsnxResult}"`);
-  console.log(`   classnames output:       "${classNamesResult}"`);
+  console.log(`   clsnx output:             "${clsnxResult}"`);
+  console.log(`   clsnxDedupe output:       "${clsnxDedupeResult}"`);
+  console.log(`   classnames output:        "${classNamesResult}"`);
   console.log(`   classnames/dedupe output: "${classNamesDedupeResult}"`);
   
-  if (clsnxResult === classNamesDedupeResult) {
-    console.log(`   ✅ clsnx matches classnames/dedupe`);
+  if (clsnxResult === classNamesResult) {
+    console.log(`   ✅ clsnx matches classnames`);
   } else {
-    console.log(`   ⚠️  clsnx differs from classnames/dedupe`);
+    console.log(`   ⚠️  clsnx differs from classnames (expected for duplicates)`);
+  }
+  
+  if (clsnxDedupeResult === classNamesDedupeResult) {
+    console.log(`   ✅ clsnxDedupe matches classnames/dedupe`);
+  } else {
+    console.log(`   ⚠️  clsnxDedupe differs from classnames/dedupe`);
   }
   
   console.log('');
@@ -90,8 +98,11 @@ Object.entries(scenarios).forEach(([key, scenario]) => {
   const testSuite = new Benchmark.Suite();
   
   testSuite
-    .add(`clsnx`, () => {
+    .add(`clsnx (non-dedupe)`, () => {
       clsnx(...scenario.args);
+    })
+    .add(`clsnxDedupe`, () => {
+      clsnxDedupe(...scenario.args);
     })
     .add(`classnames`, () => {
       classNames(...scenario.args);
@@ -153,6 +164,7 @@ function measureMemory(fn, name, iterations = 10000) {
 const heavyArgs = scenarios.heavyDuplicates.args;
 
 const clsnxMemory = measureMemory(() => clsnx(...heavyArgs), 'clsnx');
+const clsnxDedupeMemory = measureMemory(() => clsnxDedupe(...heavyArgs), 'clsnxDedupe');
 const classNamesMemory = measureMemory(() => classNames(...heavyArgs), 'classnames');
 const classNamesDedupeMemory = measureMemory(() => classNamesDedupe(...heavyArgs), 'classnames/dedupe');
 
@@ -162,4 +174,10 @@ if (clsnxMemory < classNamesMemory) {
 }
 if (clsnxMemory < classNamesDedupeMemory) {
   console.log(`✅ clsnx uses ${((classNamesDedupeMemory - clsnxMemory) / classNamesDedupeMemory * 100).toFixed(1)}% less memory than classnames/dedupe`);
+}
+if (clsnxDedupeMemory < classNamesMemory) {
+  console.log(`✅ clsnxDedupe uses ${((classNamesMemory - clsnxDedupeMemory) / classNamesMemory * 100).toFixed(1)}% less memory than classnames`);
+}
+if (clsnxDedupeMemory < classNamesDedupeMemory) {
+  console.log(`✅ clsnxDedupe uses ${((classNamesDedupeMemory - clsnxDedupeMemory) / classNamesDedupeMemory * 100).toFixed(1)}% less memory than classnames/dedupe`);
 }
