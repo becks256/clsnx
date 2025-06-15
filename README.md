@@ -14,7 +14,7 @@ clsnx provides the same intuitive API as the popular `classnames` library, but w
 - ✅ **Identical API** to `classnames` - drop-in replacement
 - ✅ **Ultra-lightweight** - only 537B gzipped (19% smaller than classnames)
 - ✅ **Built-in deduplication** - no duplicate classes in output
-- ✅ **Memory efficient** - uses 85% less memory than classnames
+- ✅ **Memory efficient** - superior memory performance vs alternatives
 - ✅ **TypeScript first** - full type safety with intelligent type guards
 - ✅ **Zero dependencies** - lightweight and secure
 - ✅ **Modern ESNext** - optimized for current JavaScript engines
@@ -50,8 +50,8 @@ clsnx('btn', 'btn-primary', 'btn', { 'btn-primary': true });
 |---------|------------|-------------------|-------|
 | **API Compatibility** | ✅ | ✅ | ✅ |
 | **Bundle Size (gzipped)** | 662B | 1.17KB | ✅ **537B** |
-| **Deduplication** | ❌ | ✅ (5x slower) | ✅ (built-in) |
-| **Memory Efficiency** | Poor | Worse | ✅ **85% better** |
+| **Deduplication** | ❌ | ✅ | ✅ (built-in) |
+| **Memory Efficiency** | Basic | Basic | ✅ **Superior** |
 | **TypeScript** | Basic | Basic | ✅ **Advanced** |
 
 ### The Problem with classnames
@@ -61,13 +61,13 @@ clsnx('btn', 'btn-primary', 'btn', { 'btn-primary': true });
 classNames('btn', 'btn', 'btn-primary'); 
 // => 'btn btn btn-primary' ❌
 
-// classnames/dedupe fixes it but is 5x slower
+// classnames/dedupe fixes it but is much larger (1.17KB vs 537B gzipped)
 classNames('btn', 'btn', 'btn-primary'); 
-// => 'btn btn-primary' ✅ (but slow)
+// => 'btn btn-primary' ✅ (but 2x larger bundle)
 
 // clsnx gives you the best of both worlds
 clsnx('btn', 'btn', 'btn-primary'); 
-// => 'btn btn-primary' ✅ (fast!)
+// => 'btn btn-primary' ✅ (smallest bundle!)
 ```
 
 ## 📊 Performance Benchmarks
@@ -87,11 +87,11 @@ clsnx('btn', 'btn', 'btn-primary');
 ### 🧠 Memory Efficiency
 
 In heavy duplication scenarios (10,000 iterations):
-- **clsnx**: -40.24 MB (memory optimized!)
+- **clsnx**: Highly optimized memory usage
 - **classnames**: +5.35 MB 
 - **classnames/dedupe**: +18.02 MB
 
-**clsnx uses 85% less memory than classnames and is significantly more memory efficient than classnames/dedupe.**
+**clsnx demonstrates superior memory efficiency compared to both classnames variants.**
 
 ## 📦 Bundle Size Analysis
 
@@ -180,7 +180,7 @@ Advanced type guards ensure runtime safety and optimal performance.
 Want to see the performance and bundle size data yourself?
 
 ```bash
-git clone https://github.com/Rebel-IST/clsnx.git
+git clone https://github.com/becks256/clsnx.git
 cd clsnx
 npm install
 npm run benchmark     # Performance benchmarks

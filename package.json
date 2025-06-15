@@ -2,7 +2,11 @@
   "name": "@becks256/clsnx",
   "version": "1.1.0",
   "description": "Ultra-lightweight (537B gzipped) CSS class utility with built-in deduplication - 19% smaller than classnames with superior functionality.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "test": "vitest",
